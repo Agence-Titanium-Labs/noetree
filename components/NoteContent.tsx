@@ -10,7 +10,7 @@ export default function NoteContent({ note }: Readonly<NoteContentProps>) {
     <div className="min-h-full flex flex-col gap-4">
       <h2 className="text-2xl font-bold">{note.title}</h2>
       <div className="grow flex flex-col gap-4">
-        <Editor content={note.content} />
+        <Editor noteId={note.id} />
       </div>
     </div>
   );

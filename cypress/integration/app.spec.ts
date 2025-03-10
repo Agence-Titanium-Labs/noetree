@@ -1,4 +1,15 @@
 // cypress/integration/app.spec.js
+import { setupClerkTestingToken } from '@clerk/testing/cypress'
+//signup the test user before running the test with setupClerkTestingToken
+
+describe('Sign in', () => {
+  it('sign up', () => {
+    setupClerkTestingToken()
+
+    cy.visit('/sign-up')
+    // Add any other actions to test
+  })
+})
 
 describe('Navigation', () => {
   it('should navigate to the about page', () => {

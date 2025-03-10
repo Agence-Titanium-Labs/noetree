@@ -26,12 +26,10 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}-
 
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
+          install-command: npm ci --legacy-peer-deps
           build: npm run build
           start: npm run start:ci
           wait-on: 'http://localhost:3000'
@@ -45,3 +43,6 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL }}

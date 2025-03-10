@@ -1,62 +1,64 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useCallback, KeyboardEvent } from 'react'
-import Cookies from 'js-cookie'
-import { cn } from '@/lib/utils'
-import ConditionChecker from './helpers/ConditionChecker'
+import { useState, useEffect, useCallback, KeyboardEvent } from "react";
+import Cookies from "js-cookie";
+import { cn } from "@/lib/utils";
+import ConditionChecker from "./helpers/ConditionChecker";
 
 interface ResizablePanelProps {
-  leftPanel: React.ReactNode
-  rightPanel: React.ReactNode
-  initialRightPanelWidth?: number
-  cookieKey?: string
+  leftPanel: React.ReactNode;
+  rightPanel: React.ReactNode;
+  initialRightPanelWidth?: number;
+  cookieKey?: string;
 }
 
 export default function ResizablePanel({
   leftPanel,
   rightPanel,
   initialRightPanelWidth = 50,
-  cookieKey = 'rightPanelWidth',
+  cookieKey = "rightPanelWidth"
 }: Readonly<ResizablePanelProps>) {
   // État pour suivre si les cookies ont été chargés
-  const [cookiesLoaded, setCookiesLoaded] = useState(false)
-  const [rightPanelWidth, setRightPanelWidth] = useState(initialRightPanelWidth)
-  const [isResizing, setIsResizing] = useState(false)
+  const [cookiesLoaded, setCookiesLoaded] = useState(false);
+  const [rightPanelWidth, setRightPanelWidth] = useState(
+    initialRightPanelWidth
+  );
+  const [isResizing, setIsResizing] = useState(false);
 
   // Step value for keyboard resizing (percentage)
-  const RESIZE_STEP = 1
+  const RESIZE_STEP = 1;
 
   // Charger la valeur depuis les cookies uniquement côté client
   useEffect(() => {
-    const savedWidth = Cookies.get(cookieKey)
+    const savedWidth = Cookies.get(cookieKey);
     if (savedWidth) {
-      setRightPanelWidth(parseFloat(savedWidth))
+      setRightPanelWidth(parseFloat(savedWidth));
     }
     // Indiquer que les cookies ont été chargés
-    setCookiesLoaded(true)
-  }, [cookieKey])
+    setCookiesLoaded(true);
+  }, [cookieKey]);
 
   // Update cookie whenever width changes, mais seulement après le chargement initial
   useEffect(() => {
     if (cookiesLoaded) {
-      Cookies.set(cookieKey, rightPanelWidth.toString(), { expires: 365 })
+      Cookies.set(cookieKey, rightPanelWidth.toString(), { expires: 365 });
     }
-  }, [rightPanelWidth, cookieKey, initialRightPanelWidth, cookiesLoaded])
+  }, [rightPanelWidth, cookieKey, initialRightPanelWidth, cookiesLoaded]);
 
   const startResizing = useCallback(() => {
-    setIsResizing(true)
-  }, [])
+    setIsResizing(true);
+  }, []);
 
   const stopResizing = useCallback(() => {
     // Blur the button to prevent focus outline from sticking
-    ;(document.activeElement as HTMLElement)?.blur()
+    (document.activeElement as HTMLElement)?.blur();
 
-    setIsResizing(false)
-  }, [])
+    setIsResizing(false);
+  }, []);
 
   const resize = useCallback(
     (e: MouseEvent) => {
-      if (!isResizing) return
+      if (!isResizing) return;
 
       // Calculate new width with boundaries (minimum 20%, maximum 80%)
       const newWidth = Math.min(
@@ -65,41 +67,41 @@ export default function ResizablePanel({
           20
         ),
         80
-      )
+      );
 
-      setRightPanelWidth(newWidth)
+      setRightPanelWidth(newWidth);
     },
     [isResizing]
-  )
+  );
 
   // Add document-level event listeners when resizing is active
   useEffect(() => {
     if (isResizing) {
-      document.addEventListener('mousemove', resize)
-      document.addEventListener('mouseup', stopResizing)
+      document.addEventListener("mousemove", resize);
+      document.addEventListener("mouseup", stopResizing);
     }
 
     return () => {
-      document.removeEventListener('mousemove', resize)
-      document.removeEventListener('mouseup', stopResizing)
-    }
-  }, [isResizing, resize, stopResizing])
+      document.removeEventListener("mousemove", resize);
+      document.removeEventListener("mouseup", stopResizing);
+    };
+  }, [isResizing, resize, stopResizing]);
 
   // Handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
+      case "ArrowLeft":
+        e.preventDefault();
         // Decrease right panel width (making it larger)
-        setRightPanelWidth((prev) => Math.min(prev + RESIZE_STEP, 80))
-        break
-      case 'ArrowRight':
-        e.preventDefault()
+        setRightPanelWidth(prev => Math.min(prev + RESIZE_STEP, 80));
+        break;
+      case "ArrowRight":
+        e.preventDefault();
         // Increase right panel width (making it smaller)
-        setRightPanelWidth((prev) => Math.max(prev - RESIZE_STEP, 20))
-        break
+        setRightPanelWidth(prev => Math.max(prev - RESIZE_STEP, 20));
+        break;
     }
-  }
+  };
 
   return (
     <div className="w-full h-screen flex">
@@ -108,8 +110,8 @@ export default function ResizablePanel({
         <button
           type="button"
           className={cn(
-            'w-[8px] hover:w-[16px] bg-gray-200 hover:bg-gray-300 cursor-ew-resize transition-all focus:outline-none focus:bg-blue-400 focus:w-[16px]',
-            isResizing && 'bg-blue-400 w-[16px]'
+            "w-[8px] hover:w-[16px] bg-gray-200 hover:bg-gray-300 cursor-ew-resize transition-all focus:outline-none focus:bg-blue-400 focus:w-[16px]",
+            isResizing && "bg-blue-400 w-[16px]"
           )}
           onMouseDown={startResizing}
           onKeyDown={handleKeyDown}
@@ -124,5 +126,5 @@ export default function ResizablePanel({
         </div>
       </ConditionChecker>
     </div>
-  )
+  );
 }

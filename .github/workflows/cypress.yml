@@ -35,9 +35,9 @@ jobs:
           browser: chrome
           record: true
           parallel: true
-          group: 'Cypress Tests'
-          spec: 'cypress/integration/**/*.spec.{js,jsx,ts,tsx}'
-          config-file: 'cypress.config.ts'
+          group: "Cypress Tests"
+          spec: "cypress/integration/**/*.spec.{js,jsx,ts,tsx}"
+          config-file: "cypress.config.ts"
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

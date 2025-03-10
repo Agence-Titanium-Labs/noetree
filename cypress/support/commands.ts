@@ -35,5 +35,5 @@
 //     }
 //   }
 // }
-const asModule = {}
-export default asModule
+const asModule = {};
+export default asModule;

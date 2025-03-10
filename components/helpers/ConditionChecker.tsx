@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
 interface ConditionCheckerProps {
-  condition: boolean
-  children: ReactNode
+  condition: boolean;
+  children: ReactNode;
 }
 
 /**
@@ -12,8 +12,8 @@ interface ConditionCheckerProps {
  */
 export default function ConditionChecker({
   condition,
-  children,
+  children
 }: ConditionCheckerProps) {
-  if (condition) return children
-  return null
+  if (condition) return children;
+  return null;
 }

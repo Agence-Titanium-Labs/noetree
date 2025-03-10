@@ -1,7 +1,7 @@
-import { Note } from '@/types/note'
+import { Note } from "@/types/note";
 
 interface NoteContentProps {
-  note: Note
+  note: Note;
 }
 
 export default function NoteContent({ note }: Readonly<NoteContentProps>) {
@@ -10,5 +10,5 @@ export default function NoteContent({ note }: Readonly<NoteContentProps>) {
       <h2 className="text-2xl font-bold mb-4">{note.title}</h2>
       <div>{note.content}</div>
     </div>
-  )
+  );
 }

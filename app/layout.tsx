@@ -1,36 +1,36 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
 import {
   ClerkProvider,
   SignInButton,
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { ConvexClientProvider } from '@/providers/ConvexClientProvider'
-import { ThemeProvider } from 'next-themes'
+  UserButton
+} from "@clerk/nextjs";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-sans",
+  subsets: ["latin"]
+});
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-mono",
+  subsets: ["latin"]
+});
 
 export const metadata: Metadata = {
-  title: 'NoeTree',
-  description: 'NoeTree app',
-}
+  title: "NoeTree",
+  description: "NoeTree app"
+};
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <ConvexClientProvider>
@@ -60,5 +60,5 @@ export default function RootLayout({
         </html>
       </ClerkProvider>
     </ConvexClientProvider>
-  )
+  );
 }

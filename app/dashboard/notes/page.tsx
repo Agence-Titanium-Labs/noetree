@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function Notes() {
   return (
@@ -6,5 +6,5 @@ export default function Notes() {
       <h1 className="text-8xl font-bold">Notes</h1>
       <Link href="/dashboard/notes/0">Note test</Link>
     </div>
-  )
+  );
 }

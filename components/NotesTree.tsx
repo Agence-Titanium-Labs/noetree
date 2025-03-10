@@ -4,7 +4,7 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
-  ContextMenuTrigger,
+  ContextMenuTrigger
 } from "./ui/context-menu";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -16,7 +16,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from "./ui/alert-dialog";
 import ConditionChecker from "./helpers/ConditionChecker";
 
@@ -35,7 +35,7 @@ export default function NotesTree({
   onSelectNote,
   onUpdateNoteTitle,
   onAddChildNote,
-  onDeleteNote,
+  onDeleteNote
 }: Readonly<NoteTreeProps>) {
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -118,8 +118,8 @@ export default function NotesTree({
           <Input
             type="text"
             value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            onKeyDown={(e) => handleRenameKeyDown(e, note)}
+            onChange={e => setEditedTitle(e.target.value)}
+            onKeyDown={e => handleRenameKeyDown(e, note)}
             onBlur={() => saveRenamedNote(note)}
             autoFocus
           />
@@ -138,8 +138,8 @@ export default function NotesTree({
               </Button>
             </ContextMenuTrigger>
             <ContextMenuContent
-              onFocusOutside={(e) => e.preventDefault()}
-              onCloseAutoFocus={(event) => {
+              onFocusOutside={e => e.preventDefault()}
+              onCloseAutoFocus={event => {
                 event.preventDefault();
               }}
             >
@@ -162,7 +162,7 @@ export default function NotesTree({
         </ConditionChecker>
 
         <ul className="flex flex-col items-start gap-4 mt-4 border-l-2 border-gray-200 pl-6">
-          {note.childNotes?.map((childNote) => (
+          {note.childNotes?.map(childNote => (
             <li key={childNote.id}>{renderNote(childNote)}</li>
           ))}
           <li>
@@ -171,8 +171,8 @@ export default function NotesTree({
                 ref={addNoteInputRef}
                 type="text"
                 value={newNoteTitle}
-                onChange={(e) => setNewNoteTitle(e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e, note)}
+                onChange={e => setNewNoteTitle(e.target.value)}
+                onKeyDown={e => handleKeyDown(e, note)}
                 onBlur={() => setEditingNoteId(null)}
                 placeholder="Note title"
                 autoFocus
@@ -200,7 +200,7 @@ export default function NotesTree({
 
       <AlertDialog
         open={noteToDelete !== null}
-        onOpenChange={(open) => !open && setNoteToDelete(null)}
+        onOpenChange={open => !open && setNoteToDelete(null)}
       >
         <AlertDialogContent>
           <AlertDialogHeader>

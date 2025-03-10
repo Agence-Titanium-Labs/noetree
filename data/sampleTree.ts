@@ -8,7 +8,7 @@ export const sampleTree: Note = {
     {
       id: 2,
       title: "First Sub Note",
-      content: "This is the first sub note",
+      content: "This is the first sub note"
     },
     {
       id: 3,
@@ -18,9 +18,9 @@ export const sampleTree: Note = {
         {
           id: 4,
           title: "First Sub Sub Note",
-          content: "This is a detailed sub sub note",
-        },
-      ],
-    },
-  ],
+          content: "This is a detailed sub sub note"
+        }
+      ]
+    }
+  ]
 };

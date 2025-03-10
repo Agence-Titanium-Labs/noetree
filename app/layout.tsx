@@ -6,7 +6,7 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
+  UserButton
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
@@ -14,21 +14,21 @@ import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin"]
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin"]
 });
 
 export const metadata: Metadata = {
   title: "NoeTree",
-  description: "NoeTree app",
+  description: "NoeTree app"
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

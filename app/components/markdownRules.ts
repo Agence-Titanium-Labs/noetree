@@ -29,7 +29,7 @@ export const markdownRules: MarkdownRule[] = [
     // On entoure les backticks de .opacity-50
     // et on affiche le contenu en brut
     highlightReplacement:
-      '<span class="opacity-50">```</span>$1<span class="opacity-50">```</span>',
+      '<span class="opacity-50">```</span>$1<span class="opacity-50">```</span>'
   },
 
   /* 2) Titres (6 niveaux) 
@@ -42,37 +42,37 @@ export const markdownRules: MarkdownRule[] = [
     name: "heading6",
     pattern: /^###### (.*)$/gm,
     renderReplacement: "<h6>$1</h6>",
-    highlightReplacement: '<span class="opacity-50">######</span> $1',
+    highlightReplacement: '<span class="opacity-50">######</span> $1'
   },
   {
     name: "heading5",
     pattern: /^##### (.*)$/gm,
     renderReplacement: "<h5>$1</h5>",
-    highlightReplacement: '<span class="opacity-50">#####</span> $1',
+    highlightReplacement: '<span class="opacity-50">#####</span> $1'
   },
   {
     name: "heading4",
     pattern: /^#### (.*)$/gm,
     renderReplacement: "<h4>$1</h4>",
-    highlightReplacement: '<span class="opacity-50">####</span> $1',
+    highlightReplacement: '<span class="opacity-50">####</span> $1'
   },
   {
     name: "heading3",
     pattern: /^### (.*)$/gm,
     renderReplacement: "<h3>$1</h3>",
-    highlightReplacement: '<span class="opacity-50">###</span> $1',
+    highlightReplacement: '<span class="opacity-50">###</span> $1'
   },
   {
     name: "heading2",
     pattern: /^## (.*)$/gm,
     renderReplacement: "<h2>$1</h2>",
-    highlightReplacement: '<span class="opacity-50">##</span> $1',
+    highlightReplacement: '<span class="opacity-50">##</span> $1'
   },
   {
     name: "heading1",
     pattern: /^# (.*)$/gm,
     renderReplacement: "<h1>$1</h1>",
-    highlightReplacement: '<span class="opacity-50">#</span> $1',
+    highlightReplacement: '<span class="opacity-50">#</span> $1'
   },
 
   /* 3) Blockquotes (lignes commençant par '> ')
@@ -84,7 +84,7 @@ export const markdownRules: MarkdownRule[] = [
     name: "blockquote",
     pattern: /^> (.*)$/gm,
     renderReplacement: "<blockquote>$1</blockquote>",
-    highlightReplacement: '<span class="opacity-50">&gt;</span> $1',
+    highlightReplacement: '<span class="opacity-50">&gt;</span> $1'
   },
 
   /* 4) Listes à puces (ligne commençant par '- ')
@@ -96,7 +96,7 @@ export const markdownRules: MarkdownRule[] = [
     name: "ulist",
     pattern: /^- (.*)$/gm,
     renderReplacement: "<ul><li>$1</li></ul>",
-    highlightReplacement: '<span class="opacity-50">-</span> $1',
+    highlightReplacement: '<span class="opacity-50">-</span> $1'
   },
 
   /* 5) Listes ordonnées (ligne commençant par 'X. ')
@@ -108,7 +108,7 @@ export const markdownRules: MarkdownRule[] = [
     name: "olist",
     pattern: /^(\d+)\\. (.*)$/gm,
     renderReplacement: '<ol start="$1"><li>$2</li></ol>',
-    highlightReplacement: '<span class="opacity-50">$1.</span> $2',
+    highlightReplacement: '<span class="opacity-50">$1.</span> $2'
   },
 
   /* 6) Images ![alt](url)
@@ -121,7 +121,7 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /!\[(.*?)\]\((.*?)\)/g,
     renderReplacement: '<img src="$2" alt="$1" />',
     highlightReplacement:
-      '<span class="opacity-50">![</span>$1<span class="opacity-50">](</span>$2<span class="opacity-50">)</span>',
+      '<span class="opacity-50">![</span>$1<span class="opacity-50">](</span>$2<span class="opacity-50">)</span>'
   },
 
   /* 7) Liens [texte](url)
@@ -133,7 +133,7 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /\[(.*?)\]\((.*?)\)/g,
     renderReplacement: '<a href="$2" target="_blank" rel="noopener">$1</a>',
     highlightReplacement:
-      '<span class="opacity-50">[</span>$1<span class="opacity-50">](</span>$2<span class="opacity-50">)</span>',
+      '<span class="opacity-50">[</span>$1<span class="opacity-50">](</span>$2<span class="opacity-50">)</span>'
   },
 
   /* 8) Gras **texte**
@@ -147,7 +147,7 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /(\*\*)(.+?)(\*\*)/g,
     renderReplacement: "<strong>$2</strong>",
     highlightReplacement:
-      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>',
+      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>'
   },
 
   /* 9) Italique *texte*
@@ -159,7 +159,7 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /(\*)(.+?)(\*)/g,
     renderReplacement: "<em>$2</em>",
     highlightReplacement:
-      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>',
+      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>'
   },
 
   /* 10) Barré ~~texte~~
@@ -170,7 +170,7 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /(~~)(.+?)(~~)/g,
     renderReplacement: "<del>$2</del>",
     highlightReplacement:
-      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>',
+      '<span class="opacity-50">$1</span>$2<span class="opacity-50">$3</span>'
   },
 
   /* 11) Code inline `code`
@@ -184,6 +184,6 @@ export const markdownRules: MarkdownRule[] = [
     pattern: /`([^`]+)`/g,
     renderReplacement: "<code>$1</code>",
     highlightReplacement:
-      '<span class="opacity-50">`</span>$1<span class="opacity-50">`</span>',
-  },
+      '<span class="opacity-50">`</span>$1<span class="opacity-50">`</span>'
+  }
 ];

@@ -12,7 +12,7 @@ export default function NotePage() {
   const [selectedNote, setSelectedNote] = useState<Note>(tree);
 
   const addChildNote = (parentId: number, newNote: Note) => {
-    const parentNote = traverseTree(tree, (note) => note.id === parentId);
+    const parentNote = traverseTree(tree, note => note.id === parentId);
     if (parentNote) {
       parentNote.childNotes = [...(parentNote.childNotes || []), newNote];
       setTree({ ...tree });
@@ -21,7 +21,7 @@ export default function NotePage() {
   };
 
   const updateNoteTitle = (noteId: number, newTitle: string) => {
-    const note = traverseTree(tree, (note) => note.id === noteId);
+    const note = traverseTree(tree, note => note.id === noteId);
     if (note) {
       note.title = newTitle;
       setTree({ ...tree });
@@ -29,15 +29,15 @@ export default function NotePage() {
   };
 
   const deleteNote = (noteId: number) => {
-    const note = traverseTree(tree, (note) => note.id === noteId);
+    const note = traverseTree(tree, note => note.id === noteId);
     if (!note || noteId === tree.id) return;
     const parentNote = traverseTree(
       tree,
-      (note) => note.childNotes?.some((child) => child.id === noteId) ?? false
+      note => note.childNotes?.some(child => child.id === noteId) ?? false
     );
     if (parentNote) {
       parentNote.childNotes = parentNote.childNotes?.filter(
-        (child) => child.id !== noteId
+        child => child.id !== noteId
       );
       setTree({ ...tree });
       setSelectedNote(parentNote);

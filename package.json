@@ -32,6 +32,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@clerk/testing": "^1.4.26",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.0.7",
     "@testing-library/jest-dom": "^6.6.3",

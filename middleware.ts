@@ -1,10 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { setupClerkTestingToken } from '@clerk/testing/cypress'
 
 const isProtectedRoute = createRouteMatcher(['/dashboard(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (process.env.CI) setupClerkTestingToken()
   if (isProtectedRoute(req)) await auth.protect()
 })
 

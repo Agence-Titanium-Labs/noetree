@@ -6,6 +6,7 @@
     "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
+    "start:ci": "next start -p 3000",
     "lint": "next lint",
     "convex": "npx convex dev",
     "test": "prettier --write . && eslint app/ --fix ",

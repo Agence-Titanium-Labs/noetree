@@ -4,7 +4,7 @@ const isProtectedRoute = createRouteMatcher(['/dashboard(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
   if (process.env.CI) {
-    auth.caller('test-user') // Simule un utilisateur en CI
+    // En CI, on ignore Clerk et on laisse passer toutes les requêtes
     return
   }
 

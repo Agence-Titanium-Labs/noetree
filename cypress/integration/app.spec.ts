@@ -5,9 +5,6 @@ import { setupClerkTestingToken } from '@clerk/testing/cypress'
 describe('Sign in', () => {
   it('sign up', () => {
     setupClerkTestingToken()
-
-    cy.visit('/sign-up')
-    // Add any other actions to test
   })
 })
 

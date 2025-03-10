@@ -10,7 +10,7 @@ import {
 } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ConvexClientProvider } from '@/providers/ConvexClientProvider'
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from 'next-themes'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

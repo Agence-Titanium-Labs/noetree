@@ -5,22 +5,12 @@ export const sampleTree: Note = {
   title: "Main Note",
   content: "",
   childNotes: [
-    {
-      id: 2,
-      title: "First Sub Note",
-      content: "",
-    },
+    { id: 2, title: "First Sub Note", content: "" },
     {
       id: 3,
       title: "Second Sub Note",
       content: "",
-      childNotes: [
-        {
-          id: 4,
-          title: "First Sub Sub Note",
-          content: "",
-        },
-      ],
-    },
-  ],
+      childNotes: [{ id: 4, title: "First Sub Sub Note", content: "" }]
+    }
+  ]
 };

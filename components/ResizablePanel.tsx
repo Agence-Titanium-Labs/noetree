@@ -16,7 +16,7 @@ export default function ResizablePanel({
   leftPanel,
   rightPanel,
   initialRightPanelWidth = 50,
-  cookieKey = "rightPanelWidth",
+  cookieKey = "rightPanelWidth"
 }: Readonly<ResizablePanelProps>) {
   // État pour suivre si les cookies ont été chargés
   const [cookiesLoaded, setCookiesLoaded] = useState(false);
@@ -93,12 +93,12 @@ export default function ResizablePanel({
       case "ArrowLeft":
         e.preventDefault();
         // Decrease right panel width (making it larger)
-        setRightPanelWidth((prev) => Math.min(prev + RESIZE_STEP, 80));
+        setRightPanelWidth(prev => Math.min(prev + RESIZE_STEP, 80));
         break;
       case "ArrowRight":
         e.preventDefault();
         // Increase right panel width (making it smaller)
-        setRightPanelWidth((prev) => Math.max(prev - RESIZE_STEP, 20));
+        setRightPanelWidth(prev => Math.max(prev - RESIZE_STEP, 20));
         break;
     }
   };

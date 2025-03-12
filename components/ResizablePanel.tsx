@@ -104,9 +104,9 @@ export default function ResizablePanel({
   };
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="flex">
       <ConditionChecker condition={cookiesLoaded}>
-        <div className="h-full grow-1 p-4 overflow-auto">{leftPanel}</div>
+        <div className="grow-1 p-4 overflow-auto">{leftPanel}</div>
         <button
           type="button"
           className={cn(
@@ -119,7 +119,7 @@ export default function ResizablePanel({
           title="Use left/right arrow keys to resize"
         />
         <div
-          className="h-full p-4 overflow-auto"
+          className="p-4 overflow-auto"
           style={{ flex: `0 1 ${rightPanelWidth}%` }}
         >
           {rightPanel}

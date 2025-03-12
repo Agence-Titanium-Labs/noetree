@@ -6,10 +6,7 @@ import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"]
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -23,15 +20,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
       <ConvexClientProvider>
         <html lang="en" suppressHydrationWarning>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
           >
             <ThemeProvider
               attribute="class"
@@ -39,8 +34,8 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Header/>
-              {children}
+              <Header />
+              <main className="grid grow">{children}</main>
             </ThemeProvider>
           </body>
         </html>

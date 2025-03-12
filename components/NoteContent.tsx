@@ -68,10 +68,7 @@ export default function NoteContent({ note }: Readonly<NoteContentProps>) {
             </div>
           </ConditionChecker>
           <ConditionChecker condition={!isLoading}>
-            <EditorContent
-              editor={editor}
-              className="flex-1 overflow-y-auto border rounded-md focus-within:ring-1 focus-within:ring-primary"
-            />
+            <EditorContent editor={editor} />
           </ConditionChecker>
         </div>
       </div>

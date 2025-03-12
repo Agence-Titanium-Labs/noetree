@@ -64,7 +64,8 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
     ],
     editorProps: {
       attributes: {
-        class: "w-full max-h-full p-4 overflow-y-auto"
+        class:
+          "flex-1 overflow-y-auto border rounded-md p-4"
       }
     }
   });

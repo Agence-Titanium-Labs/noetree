@@ -13,7 +13,7 @@ export function ToolbarGroup({ items }: Readonly<ToolbarGroupProps>) {
   return (
     <>
       {!!editor &&
-        items.map((item) => (
+        items.map(item => (
           <Tooltip key={item.name}>
             <TooltipTrigger asChild>
               <Button

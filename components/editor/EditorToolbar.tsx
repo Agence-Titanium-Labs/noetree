@@ -7,7 +7,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "../ui/tooltip";
 import { ToolbarGroup } from "./ToolbarGroup";
 import {
@@ -15,7 +15,7 @@ import {
   headingItems,
   historyItems,
   listItems,
-  specialItems,
+  specialItems
 } from "./toolbarItems";
 import {
   Dialog,
@@ -23,7 +23,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -104,7 +104,7 @@ export default function EditorToolbar() {
       .focus()
       .setImage({
         src: imageUrl,
-        alt: imageAlt || "Image",
+        alt: imageAlt || "Image"
       })
       .run();
 
@@ -164,7 +164,7 @@ export default function EditorToolbar() {
                   id="url"
                   placeholder="https://example.com"
                   value={linkUrl}
-                  onChange={(e) => setLinkUrl(e.target.value)}
+                  onChange={e => setLinkUrl(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -173,7 +173,7 @@ export default function EditorToolbar() {
                   id="linkText"
                   placeholder="Optional text to display"
                   value={linkText}
-                  onChange={(e) => setLinkText(e.target.value)}
+                  onChange={e => setLinkText(e.target.value)}
                 />
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function EditorToolbar() {
                   id="imageUrl"
                   placeholder="https://example.com/image.jpg"
                   value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
+                  onChange={e => setImageUrl(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -218,7 +218,7 @@ export default function EditorToolbar() {
                   id="imageAlt"
                   placeholder="Image description for accessibility"
                   value={imageAlt}
-                  onChange={(e) => setImageAlt(e.target.value)}
+                  onChange={e => setImageAlt(e.target.value)}
                 />
               </div>
             </div>
@@ -257,7 +257,7 @@ const ToolbarButton = ({
   active,
   disabled,
   tooltip,
-  icon,
+  icon
 }: ToolbarButtonProps) => (
   <Tooltip>
     <TooltipTrigger asChild>

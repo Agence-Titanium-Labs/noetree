@@ -19,7 +19,7 @@ export default function NoteContent({ note }: Readonly<NoteContentProps>) {
     isSaving,
     saveStatus,
     hasUnsavedChanges,
-    loadNoteContent,
+    loadNoteContent
   } = useEditorContext();
 
   useEffect(() => {

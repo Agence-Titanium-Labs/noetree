@@ -10,7 +10,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from "react";
 import { fetchNoteContent, saveNoteContent } from "@/lib/api/notes";
 import { useDebouncedCallback } from "use-debounce";
@@ -30,7 +30,7 @@ const EditorContext = createContext<EditorContextType>({
   isSaving: false,
   saveStatus: "idle",
   hasUnsavedChanges: false,
-  loadNoteContent: async () => {},
+  loadNoteContent: async () => {}
 });
 
 export const useEditorContext = (): EditorContextType => {
@@ -57,16 +57,16 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
     extensions: [
       StarterKit,
       Placeholder.configure({
-        placeholder: "Write something…",
+        placeholder: "Write something…"
       }),
       Link,
-      Image,
+      Image
     ],
     editorProps: {
       attributes: {
-        class: "w-full max-h-full p-4 overflow-y-auto",
-      },
-    },
+        class: "w-full max-h-full p-4 overflow-y-auto"
+      }
+    }
   });
 
   const loadNoteContent = useCallback(
@@ -143,7 +143,7 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
     isSaving,
     saveStatus,
     hasUnsavedChanges,
-    loadNoteContent,
+    loadNoteContent
   };
 
   return (

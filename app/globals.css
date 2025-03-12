@@ -170,10 +170,6 @@ div:has(> .tiptap) {
 }
 
 .tiptap {
-  width: 100%;
-  min-height: 100%;
-  padding: 0.5rem;
-
   /* Placeholder */
   p.is-editor-empty:first-child::before {
     color: var(--color-gray-400);
@@ -185,20 +181,20 @@ div:has(> .tiptap) {
 
   /* Set default browser styles */
   a:link {
-    color: inherit;
+    color: var(--primary);
     text-decoration: underline;
     cursor: auto;
   }
 
   a:visited {
-    color: inherit;
+    color: var(--primary);
     text-decoration: underline;
     cursor: auto;
   }
 
   a:link:active,
   a:visited:active {
-    color: inherit;
+    color: var(--primary);
   }
 
   address {

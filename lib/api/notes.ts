@@ -1,41 +1,40 @@
+import { Content } from "@tiptap/react";
+
 /**
  * Fetches note content from the server
  */
-export async function fetchNoteContent(noteId: number): Promise<string> {
-  // Placeholder for actual API call
-  // In a real implementation, you would fetch from your backend
-  try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    // Get from localStorage for demo purposes
-    const storedContent = localStorage.getItem(`note-${noteId}`);
-    return storedContent ?? '';
-  } catch (error) {
-    console.error(`Error fetching note ${noteId}:`, error);
-    throw error;
-  }
+export async function fetchNoteContent(noteId: number): Promise<Content> {
+  // In a real application, this would make an API request
+  // For now we're simulating with mock data
+  console.log(`Fetching content for note ${noteId}`);
+  
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // Return mock data
+  return {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [
+          { type: "text", text: `This is the content for note ${noteId}.` }
+        ]
+      }
+    ]
+  };
 }
 
 /**
  * Saves note content to the server
  */
 export async function saveNoteContent(noteId: number, content: string): Promise<void> {
-  // Placeholder for actual API call
-  try {
-    // For demo purposes, save to localStorage
-    localStorage.setItem(`note-${noteId}`, content);
-    
-    // In a real implementation:
-    // await fetch(`/api/notes/${noteId}`, {
-    //   method: 'PUT',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ content }),
-    // });
-    
-    console.log(`Note ${noteId} saved`);
-  } catch (error) {
-    console.error(`Error saving note ${noteId}:`, error);
-    throw error;
-  }
+  // In a real application, this would make an API request to save the content
+  console.log(`Saving content for note ${noteId}`, content);
+  
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  // Return success
+  return;
 }

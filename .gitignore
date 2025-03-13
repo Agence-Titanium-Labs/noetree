@@ -43,6 +43,3 @@ next-env.d.ts
 certificates
 # clerk configuration (can include secrets)
 /.clerk/
-
-# convex generated files
-convex/_generated

@@ -130,6 +130,7 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
   editor?.on("update", ({ editor }) => {
     if (!currentNoteId) return;
     setHasUnsavedChanges(true);
+    setSaveStatus("idle");
     debouncedSave(currentNoteId, editor.getJSON());
   });
 

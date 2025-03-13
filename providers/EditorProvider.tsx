@@ -69,6 +69,13 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
     }
   });
 
+  //timout if no editor
+  useEffect(() => {
+    if (!editor) return;
+    const timeout = setTimeout(() => {}, 1000);
+    return () => clearTimeout(timeout);
+  }, [editor]);
+
   const loadNoteContent = useCallback(
     async (noteId: number) => {
       if (!editor) return;
@@ -120,22 +127,12 @@ export function EditorProvider({ children }: Readonly<EditorProviderProps>) {
     1000
   );
 
-  // Update handler for editor content changes
-  useEffect(() => {
-    if (!editor || !currentNoteId) return;
-
-    const updateListener = ({ editor }: { editor: Editor }) => {
-      setHasUnsavedChanges(true);
-      setSaveStatus("idle");
-      debouncedSave(currentNoteId, editor.getJSON());
-    };
-
-    editor.on("update", updateListener);
-
-    return () => {
-      editor.off("update", updateListener);
-    };
-  }, [editor, currentNoteId, debouncedSave]);
+  editor?.on("update", ({ editor }) => {
+    if (!currentNoteId) return;
+    setHasUnsavedChanges(true);
+    setSaveStatus("idle");
+    debouncedSave(currentNoteId, editor.getJSON());
+  });
 
   const contextValue = {
     editor,

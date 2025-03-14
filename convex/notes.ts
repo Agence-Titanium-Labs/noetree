@@ -1,6 +1,6 @@
-import { query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { getUser } from "./helpers/helper";
 
 export const getNoteById = query({
   args: { id: v.id("notes") },
@@ -12,30 +12,58 @@ export const getNoteById = query({
   }
 });
 
-export const getNotesByUserID = query({
-  args: { userId: v.id("users") },
-  handler: async (ctx, args) => {
-    const notes = await ctx.db
+export const getNotesByMe = query({
+  args: {},
+  handler: async ctx => {
+    const user = await getUser(ctx);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return await ctx.db
       .query("notes")
-      .filter(q => q.eq(q.field("owner"), args.userId))
-      .order("desc");
-    return notes;
+      .filter(q => q.eq(q.field("owner"), user._id))
+      .order("desc")
+      .collect();
   }
 });
 
 export const createNote = mutation({
   args: {
-    owner: v.id("users"),
-    content: v.any(),
+    title: v.string(),
+    content: v.optional(v.any()),
     parentNote: v.optional(v.id("notes")),
     childNotes: v.optional(v.array(v.id("notes")))
   },
   handler: async (ctx, args) => {
+    const user = await getUser(ctx);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Check if a note with the same title exists for this user
+    const existingNote = await ctx.db
+      .query("notes")
+      .filter(q =>
+        q.and(
+          q.eq(q.field("owner"), user._id),
+          q.eq(q.field("title"), args.title)
+        )
+      )
+      .first();
+
+    if (existingNote) {
+      throw new Error("A note with this title already exists");
+    }
+
     const note = await ctx.db.insert("notes", {
-      owner: args.owner,
-      content: args.content,
+      owner: user._id,
+      title: args.title,
+      content: args.content || "",
       parentNote: args.parentNote,
-      childNotes: args.childNotes,
+      childNotes: args.childNotes || [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     });

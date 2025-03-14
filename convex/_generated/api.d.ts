@@ -11,8 +11,9 @@
 import type {
   ApiFromModules,
   FilterApi,
-  FunctionReference
+  FunctionReference,
 } from "convex/server";
+import type * as helpers_helper from "../helpers/helper.js";
 import type * as notes from "../notes.js";
 import type * as users from "../users.js";
 
@@ -25,6 +26,7 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "helpers/helper": typeof helpers_helper;
   notes: typeof notes;
   users: typeof users;
 }>;

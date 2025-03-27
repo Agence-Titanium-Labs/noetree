@@ -110,7 +110,7 @@ export default function ResizablePanel({
         <button
           type="button"
           className={cn(
-            "w-[8px] hover:w-[16px] bg-gray-200 hover:bg-gray-300 cursor-ew-resize transition-all focus:outline-none focus:bg-blue-400 focus:w-[16px]",
+            "w-[8px] hover:w-[16px] bg-muted cursor-ew-resize transition-all focus:outline-none focus:bg-muted-foreground focus:w-[16px]",
             isResizing && "bg-blue-400 w-[16px]"
           )}
           onMouseDown={startResizing}

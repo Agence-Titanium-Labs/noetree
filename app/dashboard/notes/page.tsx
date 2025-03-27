@@ -44,7 +44,7 @@ export default function Notes() {
   const [titleError, setTitleError] = useState<string | null>(null);
 
   const { data, isPending, error } = useQuery(
-    convexQuery(api.notes.getNotesByMe, {})
+    convexQuery(api.notes.getTreesByMe, {})
   );
 
   const newTreeForm = useForm<z.infer<typeof newTreeFormSchema>>({
@@ -110,7 +110,7 @@ export default function Notes() {
 
       <Dialog open={newTreeDialogOpen} onOpenChange={setNewTreeDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Create a new tree</Button>
+          <Button>Create a new tree</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <Form {...newTreeForm}>

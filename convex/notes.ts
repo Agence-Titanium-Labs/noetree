@@ -2,17 +2,30 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { getUser } from "./helpers/helper";
 
-export const getNoteById = query({
+export const getTreeById = query({
   args: { id: v.id("notes") },
   handler: async (ctx, args) => {
+    const user = await getUser(ctx);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const note = await ctx.db
       .query("notes")
-      .filter(q => q.eq(q.field("_id"), args.id));
+      .filter(q => q.eq(q.field("owner"), user._id))
+      .filter(q => q.eq(q.field("_id"), args.id))
+      .first();
+
+    if (!note) {
+      throw new Error("Note not found");
+    }
+
     return note;
   }
 });
 
-export const getNotesByMe = query({
+export const getTreesByMe = query({
   args: {},
   handler: async ctx => {
     const user = await getUser(ctx);
@@ -24,6 +37,7 @@ export const getNotesByMe = query({
     return await ctx.db
       .query("notes")
       .filter(q => q.eq(q.field("owner"), user._id))
+      .filter(q => q.eq(q.field("parentNote"), undefined))
       .order("desc")
       .collect();
   }
@@ -172,5 +186,21 @@ export const moveNote = mutation({
       parentNote: args.to
     });
     return note;
+  }
+});
+
+export const fetchNoteContent = query({
+  args: { id: v.id("notes") },
+  handler: async (ctx, args) => {
+    const note = await ctx.db
+      .query("notes")
+      .filter(q => q.eq(q.field("_id"), args.id))
+      .first();
+
+    if (!note) {
+      throw new Error("Note not found");
+    }
+
+    return note.content;
   }
 });

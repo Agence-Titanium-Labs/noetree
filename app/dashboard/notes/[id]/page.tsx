@@ -110,7 +110,10 @@ export default function NotePage() {
 
   return (
     <EditorProvider>
-      <ResizablePanelGroup direction="horizontal" autoSaveId="autoSaveNotePageResizablePanel">
+      <ResizablePanelGroup
+        direction="horizontal"
+        autoSaveId="autoSaveNotePageResizablePanel"
+      >
         <ResizablePanel
           defaultSize={40}
           minSize={20}

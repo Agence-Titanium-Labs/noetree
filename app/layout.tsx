@@ -26,7 +26,7 @@ export default function RootLayout({
       <ConvexClientProvider>
         <html lang="en" suppressHydrationWarning>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen selection:bg-primary selection:text-white`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen overflow-hidden selection:bg-primary selection:text-white`}
           >
             <ThemeProvider
               attribute="class"
@@ -35,7 +35,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Header />
-              <main className="grid grow">{children}</main>
+              <main className="h-full overflow-y-auto">{children}</main>
             </ThemeProvider>
           </body>
         </html>

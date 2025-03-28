@@ -44,8 +44,10 @@ export default function Notes() {
   const [titleError, setTitleError] = useState<string | null>(null);
 
   const { data, isPending, error } = useQuery(
-    convexQuery(api.notes.getTreesByMe, {})
+    convexQuery(api.notes.getTreesByMe, { deep: 2 })
   );
+
+  console.log(data);
 
   const newTreeForm = useForm<z.infer<typeof newTreeFormSchema>>({
     resolver: zodResolver(newTreeFormSchema),

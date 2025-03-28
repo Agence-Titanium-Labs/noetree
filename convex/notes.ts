@@ -1,9 +1,18 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { getUser } from "./helpers/helper";
+import { Doc, Id } from "./_generated/dataModel";
+
+type Notes = Doc<"notes">;
+
+interface NotesToSend extends Omit<Notes, "childNotes"> {
+  childNotes: NotesToSend[] | Id<"notes">[] | undefined;
+}
 
 export const getTreeById = query({
-  args: { id: v.id("notes") },
+  args: {
+    id: v.id("notes")
+  },
   handler: async (ctx, args) => {
     const user = await getUser(ctx);
 
@@ -26,20 +35,78 @@ export const getTreeById = query({
 });
 
 export const getTreesByMe = query({
-  args: {},
-  handler: async ctx => {
+  args: {
+    deep: v.optional(v.number())
+  },
+  handler: async (ctx, args) => {
+    //setp 1 - get user
     const user = await getUser(ctx);
 
+    //step 2 - check if user exists
     if (!user) {
       throw new Error("User not found");
     }
 
-    return await ctx.db
+    //step 3 - get all top parent notes
+    const notes = await ctx.db
       .query("notes")
-      .filter(q => q.eq(q.field("owner"), user._id))
-      .filter(q => q.eq(q.field("parentNote"), undefined))
-      .order("desc")
+      .withIndex("by_owner", q =>
+        q.eq("owner", user._id).eq("parentNote", undefined)
+      )
+      .order("asc")
       .collect();
+
+    //step 4 - map current notes to be as NotesToSend
+    const notesToSend: NotesToSend[] = notes.map(note => ({
+      ...note,
+      childNotes: note.childNotes || []
+    }));
+
+    //step 5 - check if deep is provided and if so, get the children notes until deep level
+    if (args.deep) {
+      // Start with the top-level notes
+      let currentLevelNotes = notesToSend;
+
+      // For each level of depth
+      for (let i = 0; i < args.deep; i++) {
+        const nextLevelNotes: NotesToSend[] = [];
+
+        // Process each note at the current level
+        for (const currentNote of currentLevelNotes) {
+          // Fetch its children
+          const childrenNotes = await ctx.db
+            .query("notes")
+            .withIndex("by_parent", q => q.eq("parentNote", currentNote._id))
+            .collect();
+
+          if (childrenNotes.length > 0) {
+            // Convert children to NotesToSend format
+            const childrenNotesToSend: NotesToSend[] = childrenNotes.map(
+              childNote => ({
+                ...childNote,
+                childNotes: childNote.childNotes || []
+              })
+            );
+
+            // Add these children to the current note
+            currentNote.childNotes = childrenNotesToSend;
+
+            // Add these children to the next level for processing
+            nextLevelNotes.push(...childrenNotesToSend);
+          }
+        }
+
+        // If there are no notes at the next level, we've reached the bottom of the tree
+        if (nextLevelNotes.length === 0) {
+          break;
+        }
+
+        // Move to the next level
+        currentLevelNotes = nextLevelNotes;
+      }
+    }
+
+    return notesToSend;
   }
 });
 

@@ -26,8 +26,10 @@ export default defineSchema({
     created_at: v.optional(v.string()),
     updated_at: v.optional(v.string()),
     title: v.string(),
-    content: v.any(),
+    content: v.string(),
     childNotes: v.optional(v.array(v.id("notes"))),
     parentNote: v.optional(v.id("notes"))
   })
+    .index("by_owner", ["owner", "parentNote"])
+    .index("by_parent", ["parentNote"])
 });

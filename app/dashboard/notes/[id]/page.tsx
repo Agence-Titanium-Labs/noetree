@@ -111,7 +111,11 @@ export default function NotePage() {
   return (
     <EditorProvider>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={40} className="p-4 !overflow-y-auto">
+        <ResizablePanel
+          defaultSize={40}
+          minSize={20}
+          className="p-4 !overflow-y-auto"
+        >
           <NoteTree
             tree={tree}
             selectedNote={selectedNote}
@@ -122,7 +126,11 @@ export default function NotePage() {
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={60} className="p-4 !overflow-y-auto">
+        <ResizablePanel
+          defaultSize={60}
+          minSize={40}
+          className="p-4 !overflow-y-auto"
+        >
           <NoteContent note={selectedNote} />
         </ResizablePanel>
       </ResizablePanelGroup>

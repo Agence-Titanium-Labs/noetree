@@ -1,4 +1,4 @@
-import { query, mutation } from "./_generated/server";
+import { query, mutation, declare } from "./_generated/server";
 import { v } from "convex/values";
 import { getUser } from "./helpers/helper";
 import { Doc, Id } from "./_generated/dataModel";
@@ -11,26 +11,81 @@ interface NotesToSend extends Omit<Notes, "childNotes"> {
 
 export const getTreeById = query({
   args: {
-    id: v.id("notes")
+    id: v.id("notes"),
+    deep: v.optional(v.number())
   },
   handler: async (ctx, args) => {
+    // step 1 Get the user
     const user = await getUser(ctx);
 
+    // step 2 Check if user exists
     if (!user) {
       throw new Error("User not found");
     }
 
+    //step 3 Get the note
     const note = await ctx.db
       .query("notes")
       .filter(q => q.eq(q.field("owner"), user._id))
       .filter(q => q.eq(q.field("_id"), args.id))
       .first();
 
+    // step 4 Check if note exists
     if (!note) {
       throw new Error("Note not found");
     }
 
-    return note;
+    //step 5 - map current notes to be as NotesToSend
+    const noteToSend: NotesToSend = {
+      ...note,
+      childNotes: note.childNotes || []
+    };
+
+    //step 6 - check if deep is provided and if so, get the children notes until deep level
+    if (args.deep) {
+      // Start with the top-level notes
+      let currentLevelNotes = [noteToSend];
+
+      // For each level of depth
+      for (let i = 0; i < args.deep; i++) {
+        const nextLevelNotes: NotesToSend[] = [];
+
+        // Process each note at the current level
+        for (const currentNote of currentLevelNotes) {
+          // Fetch its children
+          const childrenNotes = await ctx.db
+            .query("notes")
+            .withIndex("by_parent", q => q.eq("parentNote", currentNote._id))
+            .collect();
+
+          if (childrenNotes.length > 0) {
+            // Convert children to NotesToSend format
+            const childrenNotesToSend: NotesToSend[] = childrenNotes.map(
+              childNote => ({
+                ...childNote,
+                childNotes: childNote.childNotes || []
+              })
+            );
+
+            // Add these children to the current note
+            currentNote.childNotes = childrenNotesToSend;
+
+            // Add these children to the next level for processing
+            nextLevelNotes.push(...childrenNotesToSend);
+          }
+        }
+
+        // If there are no notes at the next level, we've reached the bottom of the tree
+        if (nextLevelNotes.length === 0) {
+          break;
+        }
+
+        // Move to the next level
+        currentLevelNotes = nextLevelNotes;
+      }
+    }
+
+    return noteToSend;
   }
 });
 

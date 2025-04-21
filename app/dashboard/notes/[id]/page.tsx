@@ -3,10 +3,14 @@
 import { useState, useCallback } from "react";
 import NoteTree from "@/components/NotesTree";
 import NoteContent from "@/components/NoteContent";
-import ResizablePanel from "@/components/ResizablePanel";
 import { sampleTree } from "@/data/sampleTree";
 import { Note } from "@/types/note";
 import { EditorProvider } from "@/providers/EditorProvider";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from "@/components/ui/resizable";
 
 // Helper functions moved outside the component to prevent recreation on each render
 const findNoteById = (tree: Note, id: number): Note | undefined => {
@@ -106,8 +110,15 @@ export default function NotePage() {
 
   return (
     <EditorProvider>
-      <ResizablePanel
-        leftPanel={
+      <ResizablePanelGroup
+        direction="horizontal"
+        autoSaveId="autoSaveNotePageResizablePanel"
+      >
+        <ResizablePanel
+          defaultSize={40}
+          minSize={20}
+          className="p-4 !overflow-y-auto"
+        >
           <NoteTree
             tree={tree}
             selectedNote={selectedNote}
@@ -116,10 +127,16 @@ export default function NotePage() {
             onAddChildNote={addChildNote}
             onDeleteNote={deleteNote}
           />
-        }
-        rightPanel={<NoteContent note={selectedNote} />}
-        cookieKey="notePagePanelWidth"
-      />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          defaultSize={60}
+          minSize={40}
+          className="p-4 !overflow-y-auto"
+        >
+          <NoteContent note={selectedNote} />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </EditorProvider>
   );
 }

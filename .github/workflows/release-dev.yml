@@ -51,16 +51,12 @@ jobs:
         run: |
           # Add -f flag to make curl fail on HTTP errors (4xx/5xx)
           # and capture the response
+          TAG_UNSTABLE="${{ github.event.inputs.tag }}-unstable"
+          JSON_PAYLOAD="{\"meta\":{\"version\":\"$TAG_UNSTABLE\",\"env\":\"development\"}}"
           HTTP_RESPONSE=$(curl -f -s -w "\n%{http_code}" -X POST "https://api.vercel.com/v1/integrations/deploy/prj_Y6x0SGC6fmsUzyy6GYi5bRDE6YBJ" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"meta\": {
-                \"version\": \"${{ github.event.inputs.tag }}-unstable\",
-                \"env\": \"development\"
-              }
-            }"\
-            -v)
+            -d "$JSON_PAYLOAD")
 
           # Extract the HTTP status code
           HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)

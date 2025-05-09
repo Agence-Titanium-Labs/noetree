@@ -60,15 +60,16 @@ jobs:
           TAG_UNSTABLE="${{ github.event.inputs.tag }}-unstable"
 
           # Configure Vercel CLI with token
-          vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-          # Deploy to development environment
-          echo "Deploying version ${TAG_UNSTABLE} to Vercel development environment..."
+          # Deploy to preview environment
+          echo "Deploying version ${TAG_UNSTABLE} to dev.noetree.com..."
 
           vercel deploy \
             --token=${{ secrets.VERCEL_TOKEN }} \
             --prod \
+            --alias dev.noetree.com \
             --meta version=${TAG_UNSTABLE} \
-            --meta environment=development
+            --meta environment=preview
 
           echo "Deployment triggered successfully"

@@ -68,25 +68,7 @@ jobs:
           vercel deploy \
             --token=${{ secrets.VERCEL_TOKEN }} \
             --meta version=${TAG_UNSTABLE} \
-            --target=preview > deployment-url.txt 2> error.txt
-
-          # Check exit code
-          if [ $? -eq 0 ]; then
-            # Extract deployment URL
-            deploymentUrl=$(cat deployment-url.txt | tr -d '\n')
-            echo "Deployment successful: $deploymentUrl"
-            
-            # Create alias to dev.noetree.com
-            echo "Setting up alias to dev.noetree.com..."
-            vercel alias --token=${{ secrets.VERCEL_TOKEN }} $deploymentUrl dev.noetree.com
-            
-            echo "Deployment and alias setup complete"
-          else
-            # Handle deployment error
-            errorMessage=$(cat error.txt)
-            echo "::error::Deployment failed: $errorMessage"
-            exit 1
-          fi
+            --target=preview
 
       - name: Create GitHub Release for Unstable Version
         if: success()

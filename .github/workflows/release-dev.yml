@@ -47,33 +47,28 @@ jobs:
           git push origin "${{ github.event.inputs.tag }}" || echo "Tag ${{ github.event.inputs.tag }} already exists on remote"
           git push origin "$NEW_TAG" || echo "Tag $NEW_TAG already exists on remote"
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
       - name: Deploy to Vercel (Dev)
         run: |
           TAG_UNSTABLE="${{ github.event.inputs.tag }}-unstable"
-          JSON_PAYLOAD=$(cat <<EOF
-          {
-            "meta": {
-              "version": "${TAG_UNSTABLE}",
-              "env": "development"
-            }
-          }
-          EOF
-          )
-          HTTP_RESPONSE=$(curl -f -s -w "\n%{http_code}" -X POST "https://api.vercel.com/v1/integrations/deploy/prj_Y6x0SGC6fmsUzyy6GYi5bRDE6YBJ" \
-            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "$JSON_PAYLOAD")
 
-          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
-          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$ d')
+          # Configure Vercel CLI with token
+          vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
 
-          echo "HTTP Status: $HTTP_STATUS"
-          echo "Response body: $HTTP_BODY"
+          # Deploy to development environment
+          echo "Deploying version ${TAG_UNSTABLE} to Vercel development environment..."
 
-          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
-            echo "Deployment failed with status $HTTP_STATUS"
-            echo "$HTTP_BODY"
-            exit 1
-          fi
+          vercel deploy \
+            --token=${{ secrets.VERCEL_TOKEN }} \
+            --prod \
+            --meta version=${TAG_UNSTABLE} \
+            --meta environment=development
 
           echo "Deployment triggered successfully"

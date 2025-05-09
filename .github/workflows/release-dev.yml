@@ -56,10 +56,11 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"meta\": {
-                \"version\": \"${{ github.event.inputs.tag }}\",
+                \"version\": \"${{ github.event.inputs.tag }}-unstable\",
                 \"env\": \"development\"
               }
-            }")
+            }"\
+            -v)
 
           # Extract the HTTP status code
           HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)

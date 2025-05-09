@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Git tag to deploy (ex: 1.45.2)"
+        description: "Git tag to deploy (ex: v1.45.2)"
         required: true
 
 jobs:
@@ -14,15 +14,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create dev release tag
+      - name: Create tags
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
           git fetch --tags
 
+          # Create the input tag on the current commit
+          git tag "${{ github.event.inputs.tag }}"
+
+          # Create the unstable tag based on the input tag
           NEW_TAG="${{ github.event.inputs.tag }}-unstable"
           git tag "$NEW_TAG" "${{ github.event.inputs.tag }}"
+
+          # Push both tags
+          git push origin "${{ github.event.inputs.tag }}"
           git push origin "$NEW_TAG"
 
       - name: Deploy to Vercel (Dev)

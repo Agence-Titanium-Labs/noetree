@@ -87,3 +87,18 @@ jobs:
             echo "::error::Deployment failed: $errorMessage"
             exit 1
           fi
+
+      - name: Create GitHub Release for Unstable Version
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.tag }}-unstable
+          name: "Development Release ${{ github.event.inputs.tag }}-unstable"
+          body: |
+            This is a development version deployed to dev.noetree.com
+
+            Based on tag: ${{ github.event.inputs.tag }}
+            Deployment date: ${{ github.event.created_at }}
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

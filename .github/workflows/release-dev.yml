@@ -24,20 +24,34 @@ jobs:
 
           git fetch --tags
 
-          # Create the input tag on the current commit
-          git tag "${{ github.event.inputs.tag }}"
+          # Check if the input tag already exists
+          if ! git rev-parse --verify refs/tags/"${{ github.event.inputs.tag }}" &>/dev/null; then
+            echo "Creating tag ${{ github.event.inputs.tag }}..."
+            # Create the input tag on the current commit
+            git tag "${{ github.event.inputs.tag }}"
+          else
+            echo "Tag ${{ github.event.inputs.tag }} already exists, using existing tag"
+          fi
 
-          # Create the unstable tag based on the input tag
+          # Check if the unstable tag already exists
           NEW_TAG="${{ github.event.inputs.tag }}-unstable"
-          git tag "$NEW_TAG" "${{ github.event.inputs.tag }}"
+          if ! git rev-parse --verify refs/tags/"$NEW_TAG" &>/dev/null; then
+            echo "Creating tag $NEW_TAG..."
+            # Create the unstable tag based on the input tag
+            git tag "$NEW_TAG" "${{ github.event.inputs.tag }}"
+          else
+            echo "Tag $NEW_TAG already exists, using existing tag"
+          fi
 
-          # Push both tags
-          git push origin "${{ github.event.inputs.tag }}"
-          git push origin "$NEW_TAG"
+          # Push both tags (will be no-op if they already exist remotely)
+          git push origin "${{ github.event.inputs.tag }}" || echo "Tag ${{ github.event.inputs.tag }} already exists on remote"
+          git push origin "$NEW_TAG" || echo "Tag $NEW_TAG already exists on remote"
 
       - name: Deploy to Vercel (Dev)
         run: |
-          curl -X POST "https://api.vercel.com/v1/integrations/deploy/prj_Y6x0SGC6fmsUzyy6GYi5bRDE6YBJ" \
+          # Add -f flag to make curl fail on HTTP errors (4xx/5xx)
+          # and capture the response
+          HTTP_RESPONSE=$(curl -f -s -w "\n%{http_code}" -X POST "https://api.vercel.com/v1/integrations/deploy/prj_Y6x0SGC6fmsUzyy6GYi5bRDE6YBJ" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
@@ -45,4 +59,21 @@ jobs:
                 \"version\": \"${{ github.event.inputs.tag }}\",
                 \"env\": \"development\"
               }
-            }"
+            }")
+
+          # Extract the HTTP status code
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+          # Extract the response body
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$ d')
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response body: $HTTP_BODY"
+
+          # Fail if status code is not 2xx
+          if [ $HTTP_STATUS -lt 200 ] || [ $HTTP_STATUS -ge 300 ]; then
+            echo "Deployment failed with status $HTTP_STATUS"
+            echo "$HTTP_BODY"
+            exit 1
+          fi
+
+          echo "Deployment triggered successfully"

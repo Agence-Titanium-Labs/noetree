@@ -22,11 +22,14 @@ export default defineSchema({
   }),
 
   notes: defineTable({
-    owner: v.id("users"),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string()),
-    content: v.any(),
     childNotes: v.optional(v.array(v.id("notes"))),
-    parentNote: v.optional(v.id("notes"))
+    content: v.string(),
+    created_at: v.optional(v.string()),
+    owner: v.id("users"),
+    parentNote: v.optional(v.id("notes")),
+    title: v.string(),
+    updated_at: v.optional(v.string())
   })
+    .index("by_owner", ["owner", "parentNote"])
+    .index("by_parent", ["parentNote"])
 });

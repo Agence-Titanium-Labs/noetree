@@ -67,9 +67,7 @@ jobs:
 
           vercel deploy \
             --token=${{ secrets.VERCEL_TOKEN }} \
-            --prod \
-            --alias dev.noetree.com \
             --meta version=${TAG_UNSTABLE} \
-            --meta environment=preview
+            --target=preview
 
           echo "Deployment triggered successfully"

@@ -50,7 +50,15 @@ jobs:
       - name: Deploy to Vercel (Dev)
         run: |
           TAG_UNSTABLE="${{ github.event.inputs.tag }}-unstable"
-          JSON_PAYLOAD="{\"meta\":{\"version\":\"$TAG_UNSTABLE\",\"env\":\"development\"}}"
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "meta": {
+              "version": "${TAG_UNSTABLE}",
+              "env": "development"
+            }
+          }
+          EOF
+          )
           HTTP_RESPONSE=$(curl -f -s -w "\n%{http_code}" -X POST "https://api.vercel.com/v1/integrations/deploy/prj_Y6x0SGC6fmsUzyy6GYi5bRDE6YBJ" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \

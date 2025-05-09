@@ -27,6 +27,7 @@ export const createNote = mutation({
   args: {
     owner: v.id("users"),
     content: v.any(),
+    title: v.string(),
     parentNote: v.optional(v.id("notes")),
     childNotes: v.optional(v.array(v.id("notes")))
   },
@@ -35,6 +36,7 @@ export const createNote = mutation({
       owner: args.owner,
       content: args.content,
       parentNote: args.parentNote,
+      title: args.title,
       childNotes: args.childNotes,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()

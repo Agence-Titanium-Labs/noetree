@@ -70,7 +70,7 @@ jobs:
           echo "HTTP Status: $HTTP_STATUS"
           echo "Response body: $HTTP_BODY"
 
-          if [ $HTTP_STATUS -lt 200 ] || [ $HTTP_STATUS -ge 300 ]; then
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
             echo "Deployment failed with status $HTTP_STATUS"
             echo "$HTTP_BODY"
             exit 1
